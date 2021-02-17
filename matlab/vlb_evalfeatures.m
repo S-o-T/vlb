@@ -47,9 +47,8 @@ end
 
 fprintf('Running %d tasks of %s on %s for %s features.\n', ...
   numel(opts.taskids), opts.benchName, imdb.name, featsname);
-status = utls.textprogressbar(numel(imdb.tasks), 'updatestep', 1);
 scores = cell(1, numel(opts.taskids)); info = cell(1, numel(opts.taskids));
-for ti = 1:numel(opts.taskids)
+parfor ti = 1:numel(opts.taskids)
   task = imdb.tasks(opts.taskids(ti));
   fa = utls.features_get(imdb, featsname, task.ima);
   fb = utls.features_get(imdb, featsname, task.imb);
@@ -62,7 +61,6 @@ for ti = 1:numel(opts.taskids)
   scores{ti}.ima = task.ima;
   scores{ti}.imb = task.imb;
   info{ti}.args = {allargs};
-  status(ti);
 end
 
 scores = struct2table(cell2mat(scores), 'AsArray', true);

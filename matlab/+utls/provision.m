@@ -36,9 +36,9 @@ fprintf(isdeployed+1, ...
   tgt_file, tgt_dir);
 switch ext
   case {'.tar', '.gz'}
-    untar(url, tgt_dir);
+    untar(tgt_file, tgt_dir);
   case '.zip'
-    unzip(url, tgt_dir);
+    unzip(tgt_file, tgt_dir);
   otherwise
     error('Unknown archive %s', ext);
 end
@@ -46,10 +46,10 @@ end
 
 
 function outfile = download(url, target_file)
-wgetCommand = 'wget %s -O %s'; % Command for downloading archives
+wgetCommand = 'wget --no-check-certificate %s -O %s'; % Command for downloading archives
 
 [distDir, ~, ~] = fileparts(target_file);
-vl_xmkdir(distDir);
+mkdir(distDir);
 
 % test if wget works
 [status, ~] = system('wget --help');
